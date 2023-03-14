@@ -3,6 +3,7 @@ import Info from "@/components/info"
 import UserInfo from "@/components/userinfo"
 import { useUserInfo } from "@/lib/auth-hook"
 import { AppShell, Group, Header, useMantineTheme } from "@mantine/core"
+import { useRouter } from "next/router"
 import { useEffect } from "react"
 
 export default function AppShellDemo() {
@@ -10,12 +11,18 @@ export default function AppShellDemo() {
 
   const [userInfo, authApi] = useUserInfo()
 
+  const router = useRouter()
+
   // async init
   useEffect(() => {
     ;(async () => {
       await authApi.getInfo()
     })()
   }, [])
+
+  useEffect(() => {
+    if (userInfo) router.push("/list")
+  }, [userInfo])
 
   return (
     <AppShell
